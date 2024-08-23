@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\__Api\Posts\PostController;
 use App\Http\Controllers\__Auth\Login\LoginController;
 use App\Http\Controllers\__Auth\Register\RegisterController;
 use App\Http\Controllers\__Auth\Verification\EmailVerificationNotificationController;
@@ -22,6 +23,18 @@ Route::post('send-email-verification', [EmailVerificationNotificationController:
 Route::post('verify-email', [EmailVerificationNotificationController::class, 'verify']);
 Route::post('login', [LoginController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::prefix('posts')->group(function () {
+//     Route::get('/', [PostController::class, 'index']);
+//     Route::get('/get-by-id/{id}', [PostController::class, 'getByID']);
+// });
+Route::prefix('/')->middleware('auth:sanctum')->group(function () {
+
+    Route::prefix('posts')->group(function () {
+        Route::get('/', [PostController::class, 'index']);
+        Route::get('/get-by-id/{id}', [PostController::class, 'getByID']);
+        Route::get('/get-my-posts', [PostController::class, 'viewMyPosts']);
+        Route::post('/store', [PostController::class, 'store']);
+        Route::put('/update/{id}', [PostController::class, 'update']);
+        Route::delete('/destroy/{id}', [PostController::class, 'delete']);
+    });
 });
