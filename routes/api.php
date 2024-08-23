@@ -23,10 +23,10 @@ Route::post('send-email-verification', [EmailVerificationNotificationController:
 Route::post('verify-email', [EmailVerificationNotificationController::class, 'verify']);
 Route::post('login', [LoginController::class, 'login']);
 
-// Route::prefix('posts')->group(function () {
-//     Route::get('/', [PostController::class, 'index']);
-//     Route::get('/get-by-id/{id}', [PostController::class, 'getByID']);
-// });
+Route::prefix('posts')->group(function () {
+    Route::get('/', [PostController::class, 'index']);
+    Route::get('/get-by-id/{id}', [PostController::class, 'getByID']);
+});
 Route::prefix('/')->middleware('auth:sanctum')->group(function () {
     Route::get('/destroy',function(){
         dd("ssss");

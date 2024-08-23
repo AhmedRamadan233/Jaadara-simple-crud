@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\__Api\Posts;
 
+use App\Helpers\HandelFile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\__Admin\Posts\CreatePostRequest;
 use App\Http\Requests\__Admin\Posts\UpdatePostRequest;
@@ -40,7 +41,7 @@ class PostController extends Controller
         $userId = Auth::id();
         $directory = 'posts/images/';
         if ($request->hasFile('image')) {
-            $validatedData['image'] = $this->uploadFile($request->file('image'), null, $directory);
+            $validatedData['image'] = HandelFile::uploadFile($request->file('image'), null, $directory);
         }
         $post = Post::create([
             'user_id' => $userId,
@@ -58,20 +59,20 @@ class PostController extends Controller
         $validatedData = $request->validated();
         $user = Auth::user();
         $post = Post::findOrFail($id);
-    
+
         if ($post->user_id !== $user->id) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-    
+
         $directory = 'posts/images/';
         if ($request->hasFile('image')) {
-            $validatedData['image'] = $this->uploadFile($request->file('image'), $post->image, $directory);
+            $validatedData['image'] = HandelFile::uploadFile($request->file('image'), $post->image, $directory);
         } else {
             $validatedData['image'] = $post->image;
         }
-    
+
         $post->update($validatedData);
-    
+
         return new PostResource($post);
     }
 
@@ -84,35 +85,7 @@ class PostController extends Controller
         }
         $post->delete();
         $imagePath = $post->image;
-        $this->deleteFile($imagePath);
+        HandelFile::deleteFile($imagePath);
         return response()->json(['message' => 'Post deleted successfully'], 200);
-    }
-
-
-
-    protected function uploadFile(UploadedFile $file, $oldFilename = null, $directory): string
-    {
-        $directoryPath = public_path($directory);
-
-        if (!file_exists($directoryPath)) {
-            mkdir($directoryPath, 0777, true);
-        }
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move($directoryPath, $filename);
-        if ($oldFilename) {
-            $oldFilePath = public_path($oldFilename);
-            if (file_exists($oldFilePath)) {
-                @unlink($oldFilePath);
-            }
-        }
-        return $directory . $filename;
-    }
-    protected function deleteFile($filepath): bool
-    {
-        $fullPath = public_path($filepath);
-        if (file_exists($fullPath)) {
-            return @unlink($fullPath);
-        }
-        return false;
     }
 }
