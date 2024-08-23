@@ -28,13 +28,15 @@ Route::post('login', [LoginController::class, 'login']);
 //     Route::get('/get-by-id/{id}', [PostController::class, 'getByID']);
 // });
 Route::prefix('/')->middleware('auth:sanctum')->group(function () {
-
+    Route::get('/destroy',function(){
+        dd("ssss");
+    });
     Route::prefix('posts')->group(function () {
         Route::get('/', [PostController::class, 'index']);
         Route::get('/get-by-id/{id}', [PostController::class, 'getByID']);
         Route::get('/get-my-posts', [PostController::class, 'viewMyPosts']);
         Route::post('/store', [PostController::class, 'store']);
         Route::put('/update/{id}', [PostController::class, 'update']);
-        Route::delete('/destroy/{id}', [PostController::class, 'delete']);
+        Route::delete('/{id}/delete', [PostController::class, 'delete']);
     });
 });
