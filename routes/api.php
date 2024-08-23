@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\__Api\Posts\PostController;
+use App\Http\Controllers\__Api\States\StatController;
 use App\Http\Controllers\__Auth\Login\LoginController;
 use App\Http\Controllers\__Auth\Register\RegisterController;
 use App\Http\Controllers\__Auth\Verification\EmailVerificationNotificationController;
@@ -39,4 +40,9 @@ Route::prefix('/')->middleware('auth:sanctum')->group(function () {
         Route::put('/update/{id}', [PostController::class, 'update']);
         Route::delete('/{id}/delete', [PostController::class, 'delete']);
     });
+    Route::prefix('stats')->group(function () {
+        Route::get('/', [StatController::class, 'index']);
+       
+    });
+
 });
