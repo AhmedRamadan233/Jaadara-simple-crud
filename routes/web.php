@@ -18,10 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('register', [RegisterController::class, 'index']);
+Route::get('register', [RegisterController::class, 'index'])->name('register.index');
 Route::post('register/store', [RegisterController::class, 'register'])->name('register.store');
 
-Route::post('send-email-verification', [EmailVerificationNotificationController::class, 'sendEmailVerification']);
 Route::post('verify-email/store', [EmailVerificationNotificationController::class, 'verify'])->name('verify');
 Route::get('verify-email', [EmailVerificationNotificationController::class, 'index'])->name('verify.index');
 
@@ -37,9 +36,8 @@ Route::prefix('/')->middleware('auth')->group(function () {
     Route::prefix('website/postsx')->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('posts');
         Route::post('/store', [PostController::class, 'store'])->name('posts.store');
-        Route::get('/get-by-id/{id}', [PostController::class, 'getByID']);
-        Route::get('/get-my-posts', [PostController::class, 'viewMyPosts']);
-        Route::put('/update/{id}', [PostController::class, 'update']);
-        Route::delete('/{id}/delete', [PostController::class, 'delete']);
+        Route::get('/edit/{id}', [PostController::class, 'editPost'])->name('posts.edit');
+        Route::post('/update', [PostController::class, 'update'])->name('posts.update');
+        Route::delete('/delete/{id}', [PostController::class, 'delete']);
     });
 });

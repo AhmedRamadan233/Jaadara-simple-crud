@@ -61,19 +61,9 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
 
-    <script>
-        // CSRF Token setup for AJAX requests
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
 
-        // jQuery example for button click
-        $('#exampleButton').click(function() {
-            alert('Button clicked!');
-        });
-    </script>
+    @stack('scripts')
+
 </body>
 
 </html>

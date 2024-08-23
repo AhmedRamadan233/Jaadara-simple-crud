@@ -24,7 +24,7 @@ class LoginController extends Controller
 
         if (!$user || !$user->is_verified) {
 
-            return redirect()->back()->withErrors(['login' => 'Account not verified']);
+            return redirect()->route('login.index')->withErrors(['login' => 'Account not verified']);
         }
 
         if (Auth::attempt($credentials)) {
